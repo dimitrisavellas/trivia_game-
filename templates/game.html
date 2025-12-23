@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Baby's Gift - Game</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .game-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .game-code {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .game-code h3 {
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .game-code .code {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            letter-spacing: 2px;
+        }
+        
+        .share-link {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e3f2fd;
+            border-radius: 6px;
+            font-size: 0.9em;
+            color: #1976d2;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            margin-top: 10px;
+            padding: 8px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        
+        .copy-btn:hover {
+            background: #5568d3;
+        }
+        
+        .scores {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .score-box {
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: white;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .question-info {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .role-label {
+            text-align: center;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+            font-size: 1.1em;
+        }
+        
+        .role-guessing {
+            background: #34495e;
+        }
+        
+        .role-clicking {
+            background: #16a085;
+        }
+        
+        .question-text {
+            background: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .answers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .answer-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .answer-btn.hidden {
+            background: #95a5a6;
+            color: white;
+            cursor: not-allowed;
+        }
+        
+        .answer-btn.clickable {
+            background: #3498db;
+            color: white;
+        }
+        
+        .answer-btn.clickable:hover {
+            background: #2980b9;
+            transform: scale(1.02);
+        }
+        
+        .answer-btn.revealed {
+            background: #27ae60;
+            color: white;
+            font-weight: bold;
+            cursor: not-allowed;
+        }
+        
+        .next-btn {
+            display: block;
+            width: 250px;
+            margin: 0 auto;
+            padding: 15px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .next-btn:hover {
+            background: #229954;
+        }
+        
+        .next-btn.hidden {
+            display: none;
+        }
+        
+        .winner-screen {
+            text-align: center;
+            padding: 50px;
+        }
+        
+        .winner-screen h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .winner-screen .scores-summary {
+            font-size: 1.5em;
+            line-height: 2;
+            color: #555;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .lobby-screen {
+            text-align: center;
+            padding: 50px;
+        }
+        
+        .lobby-screen h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .players-list {
+            margin: 30px 0;
+            font-size: 1.2em;
+        }
+        
+        .player-item {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .start-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .start-btn:hover {
+            background: #229954;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Lobby Screen -->
+        <div id="lobbyScreen" class="lobby-screen">
+            <div class="game-header">
+                <div class="game-code">
+                    <h3>Game Code:</h3>
+                    <div class="code" id="gameCodeDisplay">{{ game_id }}</div>
+                    <div class="share-link" id="shareLink"></div>
+                    <button class="copy-btn" onclick="copyLink()">📋 Copy Link</button>
+                </div>
+            </div>
+            <h2>Waiting for players...</h2>
+            <div class="players-list" id="playersList"></div>
+            <button class="start-btn" id="startBtn" onclick="startGame()">▶️ Start Game</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="hidden">
+            <div class="scores" id="scores"></div>
+            <div class="timer" id="timerDisplay">⏱️ 60s</div>
+            <div class="question-info" id="questionInfo">Round 1</div>
+            <div class="role-label" id="roleLabel"></div>
+            <div class="question-text" id="questionText">Loading question...</div>
+            <div class="answers-grid" id="answersGrid"></div>
+            <button class="next-btn hidden" id="nextBtn" onclick="nextQuestion()">⏭️ Next Question</button>
+        </div>
+
+        <!-- Winner Screen -->
+        <div id="winnerScreen" class="hidden winner-screen">
+            <h1 id="winnerText">🏆 Winner!</h1>
+            <div class="scores-summary" id="scoresSummary"></div>
+            <button class="start-btn" onclick="restartGame()">🔁 Play Again</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        const gameId = '{{ game_id }}';
+        let myTeamIndex = null;
+        let gameState = null;
+        let timerInterval = null;
+        let timeLeft = 60;
+
+        // Set share link
+        document.getElementById('shareLink').textContent = window.location.href;
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard!');
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 60;
+            const timerEl = document.getElementById('timerDisplay');
+            timerEl.textContent = `⏱️ ${timeLeft}s`;
+            
+            timerInterval = setInterval(() => {
+                timeLeft -= 1;
+                if (timeLeft <= 0) {
+                    timeLeft = 0;
+                    clearInterval(timerInterval);
+                }
+                timerEl.textContent = `⏱️ ${timeLeft}s`;
+            }, 1000);
+        }
+
+        // Join game on page load
+        socket.emit('join_game', { game_id: gameId });
+
+        socket.on('joined_game', (data) => {
+            myTeamIndex = data.team_index;
+            gameState = data.state;
+            updateLobby();
+        });
+
+        socket.on('player_joined', (data) => {
+            updateLobby(data.players);
+        });
+
+        socket.on('game_started', (data) => {
+            gameState = data;
+            showGameScreen();
+            updateGameUI();
+            startTimer();
+        });
+
+        socket.on('answer_revealed', (data) => {
+            gameState = data.state;
+            updateGameUI();
+        });
+
+        socket.on('question_loaded', (data) => {
+            gameState = data;
+            updateGameUI();
+            startTimer();
+        });
+
+        socket.on('game_over', (data) => {
+            gameState = data;
+            clearInterval(timerInterval);
+            showWinnerScreen();
+        });
+
+        socket.on('error', (data) => {
+            alert(data.message);
+        });
+
+        function updateLobby(players) {
+            if (!gameState) return;
+            
+            const playersList = document.getElementById('playersList');
+            playersList.innerHTML = '<h3>Teams:</h3>';
+            
+            for (let i = 0; i < gameState.num_teams; i++) {
+                const div = document.createElement('div');
+                div.className = 'player-item';
+                div.style.background = gameState.team_colors[i];
+                div.style.color = 'white';
+                div.textContent = gameState.team_names[i];
+                if (i === myTeamIndex) {
+                    div.textContent += ' (You)';
+                }
+                playersList.appendChild(div);
+            }
+        }
+
+        function startGame() {
+            socket.emit('start_game', { game_id: gameId });
+        }
+
+        function restartGame() {
+            socket.emit('restart_game', { game_id: gameId });
+        }
+
+        function showGameScreen() {
+            document.getElementById('lobbyScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            document.getElementById('winnerScreen').classList.add('hidden');
+        }
+
+        function showWinnerScreen() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('winnerScreen').classList.remove('hidden');
+            
+            const maxScore = Math.max(...gameState.team_scores.slice(0, gameState.num_teams));
+            const winners = [];
+            for (let i = 0; i < gameState.num_teams; i++) {
+                if (gameState.team_scores[i] === maxScore) {
+                    winners.push(gameState.team_names[i]);
+                }
+            }
+            
+            const winnerText = winners.length === 1 ? 
+                `🏆 ${winners[0]} WINS!` : 
+                `🏆 TIE: ${winners.join(', ')}!`;
+            
+            document.getElementById('winnerText').textContent = winnerText;
+            
+            let summary = '';
+            for (let i = 0; i < gameState.num_teams; i++) {
+                summary += `${gameState.team_names[i]}: ${gameState.team_scores[i]} pts<br>`;
+            }
+            document.getElementById('scoresSummary').innerHTML = summary;
+        }
+
+        function updateGameUI() {
+            if (!gameState) return;
+            
+            const scoresDiv = document.getElementById('scores');
+            scoresDiv.innerHTML = '';
+            for (let i = 0; i < gameState.num_teams; i++) {
+                const scoreBox = document.createElement('div');
+                scoreBox.className = 'score-box';
+                scoreBox.style.background = gameState.team_colors[i];
+                scoreBox.textContent = `${gameState.team_names[i]}: ${gameState.team_scores[i]}`;
+                scoresDiv.appendChild(scoreBox);
+            }
+
+            // compute current round from question_num and num_teams
+            const totalQuestions = gameState.total_rounds * gameState.num_teams;
+            const currentQuestion = Math.min(gameState.question_num, totalQuestions);
+            const currentRound = gameState.num_teams > 0
+                ? Math.floor((currentQuestion - 1) / gameState.num_teams) + 1
+                : 1;
+
+            document.getElementById('questionInfo').textContent = 
+                `Round ${currentRound} of ${gameState.total_rounds}`;
+            
+            const roleLabel = document.getElementById('roleLabel');
+            const isGuessing = gameState.current_team === myTeamIndex;
+            
+            if (isGuessing) {
+                roleLabel.textContent = `👤 YOUR TEAM (${gameState.team_names[myTeamIndex]}) is GUESSING`;
+                roleLabel.className = 'role-label role-guessing';
+            } else {
+                roleLabel.textContent = `🎯 TEAM "${gameState.team_names[gameState.current_team]}" is GUESSING - You click answers`;
+                roleLabel.className = 'role-label role-clicking';
+            }
+            
+            document.getElementById('questionText').textContent = gameState.question_text;
+            
+            const answersGrid = document.getElementById('answersGrid');
+            answersGrid.innerHTML = '';
+            
+            gameState.answers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                
+                if (gameState.revealed.includes(index)) {
+                    btn.className += ' revealed';
+                    btn.textContent = `✓ ${answer[0]} (${answer[1]} pts)`;
+                    btn.disabled = true;
+                } else if (isGuessing) {
+                    btn.className += ' hidden';
+                    btn.textContent = '❓ Hidden';
+                    btn.disabled = true;
+                } else {
+                    btn.className += ' clickable';
+                    btn.textContent = `${answer[0]} (${answer[1]} pts)`;
+                    btn.onclick = () => revealAnswer(index);
+                }
+                
+                answersGrid.appendChild(btn);
+            });
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (isGuessing) {
+                nextBtn.classList.add('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+            }
+        }
+
+        function revealAnswer(index) {
+            socket.emit('reveal_answer', {
+                game_id: gameId,
+                answer_index: index
+            });
+        }
+
+        function nextQuestion() {
+            socket.emit('next_question', { game_id: gameId });
+        }
+    </script>
+</body>
+</html>
