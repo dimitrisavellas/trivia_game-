@@ -32,3 +32,7 @@ A Flask-based multiplayer guessing game where teams compete in real-time to scor
 🚀 Quick Start
 
 Clone, install dependencies, set DATABASE_URL in .env, and run with python app.py. Perfect for game nights with 2-4 teams!
+
+
+If you want to check out the game and play with your friends you can visit:   https://web-production-7985.up.railway.app/ 
+If you wish to help enrich the database of questions please contact me 
