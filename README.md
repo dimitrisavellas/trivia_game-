@@ -3,31 +3,30 @@
 A Flask-based multiplayer guessing game where teams compete in real-time to score points by revealing answers strategically. Built with WebSockets for instant synchronization across all players.
 ✨ Features
 
-    Real-time multiplayer using Flask-SocketIO for live gameplay
+ Real-time multiplayer using Flask-SocketIO for live gameplay
 
-    Team-based competition with customizable team names and colors
+Team-based competition with customizable team names and colors
 
-    Round-robin gameplay where teams take turns guessing while others control answer reveals
+Round-robin gameplay where teams take turns guessing while others control answer reveals
 
-    Dynamic scoring system with difficulty-based points
+Dynamic scoring system with difficulty-based points
 
-    Lobby system with shareable game codes for easy joining
+Lobby system with shareable game codes for easy joining
 
-    PostgreSQL integration for question/answer management
+PostgreSQL integration for question/answer management
+Configurable difficulty levels (Easy, Medium, Hard)
 
-    Configurable difficulty levels (Easy, Medium, Hard)
-
-    Responsive UI with gradient design and smooth animations
+Responsive UI with gradient design and smooth animations
 
 🛠️ Tech Stack
 
-    Backend: Flask, Flask-SocketIO, Eventlet
+Backend: Flask, Flask-SocketIO, Eventlet
 
-    Database: PostgreSQL (Neon serverless)
+Database: PostgreSQL (Neon serverless)
 
-    Frontend: Vanilla JavaScript, Socket.IO client
+Frontend: Vanilla JavaScript, Socket.IO client
 
-    Deployment: Railway (serverless mode)
+ Deployment: Railway (serverless mode)
 
 🚀 Quick Start
 
